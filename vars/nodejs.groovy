@@ -9,7 +9,10 @@ def call() {
       '''
     }
 
-    sh 'env'
-    //common.publishArtifacts()
+    //If both are equal it is definitely a tag
+    if ( env.BRANCH_NAME == env.TAG_NAME )
+    {
+      common.publishArtifacts()
+    }
   }
 }
