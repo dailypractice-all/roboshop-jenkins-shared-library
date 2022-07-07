@@ -8,5 +8,8 @@ def call() {
         npm install
       '''
     }
+
+    sh 'env'
+    //common.publishArtifacts()
   }
 }
