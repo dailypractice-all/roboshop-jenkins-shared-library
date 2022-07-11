@@ -9,6 +9,7 @@ def call() {
         npm install 
       '''
     }
+      common.codeChecks()
 
     // If both are equal then it is definitely a tag
     if( env.BRANCH_NAME == env.TAG_NAME )
