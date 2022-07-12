@@ -43,8 +43,22 @@ def publishArtifacts() {
   stage('Deploy to Dev Env') {
       build job: 'deploy-to-any-env', parameters: [string(name: 'COMPONENT', value: "${COMPONENT}"), string(name: 'ENV', value: "${ENV}"), string(name: 'APP_VERSION', value: "${TAG_NAME}")]
   }
+
+  stage('Run Smoke Tests') {
+    sh "echo Smoke Tests"
+  }
+
+  promoteRelease{"dev", "qa"}
 }
 
+def promoteRelease(SOURCE_ENV,ENV) {
+  withCredentials([usernamePassword(credentialsId: 'NEXUS', passwordVariable: 'pass', usernameVariable: 'user')]) {
+    sh """
+      cp ${SOURCE_ENV}-${COMPONENT}-${TAG_NAME}.zip ${ENV}-${COMPONENT}-${TAG_NAME}.zip
+      curl -v -u ${user}:${pass} --upload-file ${ENV}-${COMPONENT}-${TAG_NAME}.zip http://172.31.11.249:8081/repository/${COMPONENT}/${ENV}-${COMPONENT}-${TAG_NAME}.zip
+    """
+  }
+}
 def codeChecks() {
   stage('Quality Checks & Unit Tests') {
    parallel([
