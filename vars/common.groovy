@@ -48,7 +48,7 @@ def publishArtifacts() {
     sh "echo Smoke Tests"
   }
 
-  promoteRelease{"dev", "qa"}
+  promoteRelease("dev", "qa")
 }
 
 def promoteRelease(SOURCE_ENV,ENV) {
