@@ -8,7 +8,7 @@ def call() {
     ansiColor('xterm') {
 
       stage('Code Checkout') {
-        sh 'rm -rf *'
+        sh 'find . | sed -e "1d | xargs rm -rf'
         git branch: 'main', url: 'https://github.com/dailypractice-all/roboshop-terraform-mutable-approach.git'
       }
       stage('Terraform Init') {
